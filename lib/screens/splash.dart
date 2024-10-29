@@ -18,7 +18,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    init();
+    Future.delayed(Duration.zero,init);
   }
 
   @override
@@ -42,14 +42,6 @@ class _SplashState extends State<Splash> {
 
   Future<void> init() async {
     changeStatus("Inicialitzant aplicació");
-    await Future.delayed(const Duration(milliseconds: 500));
-    changeStatus("Carregant (25%)");
-    await Future.delayed(const Duration(milliseconds: 500));
-    changeStatus("Carregant (50%)");
-    await Future.delayed(const Duration(milliseconds: 500));
-    changeStatus("Carregant (75%)");
-    await Future.delayed(const Duration(milliseconds: 500));
-    changeStatus("Carregant (100%)");
     if (FirebaseAuth.instance.currentUser == null) {
       if (!mounted) return;
       Navigator.pushReplacement(

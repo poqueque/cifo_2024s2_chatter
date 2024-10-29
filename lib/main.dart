@@ -33,7 +33,7 @@ class MainApp extends StatelessWidget {
           FirebaseUILocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          FirebaseUILocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
       ),
     );

@@ -1,12 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class Message {
-
+class Message implements Comparable<Message> {
   final String content;
   final String uid;
+  final String author;
   final DateTime dateTime;
 
-  Message({required this.content, required this.uid, required this.dateTime});
+  bool get isMine => uid == FirebaseAuth.instance.currentUser?.uid;
+
+  Message({
+    required this.content,
+    required this.uid,
+    required this.author,
+    required this.dateTime,
+  });
 
   factory Message.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -16,6 +24,7 @@ class Message {
     return Message(
       content: data?['content'] ?? "",
       uid: data?['uid'] ?? "",
+      author: data?['author'] ?? "Anònim",
       dateTime: DateTime.fromMillisecondsSinceEpoch(data?['dateTime'] ?? 0),
     );
   }
@@ -24,8 +33,13 @@ class Message {
     return {
       "content": content,
       "uid": uid,
+      "author": author,
       "dateTime": dateTime.millisecondsSinceEpoch
     };
   }
 
+  @override
+  int compareTo(Message other) {
+    return dateTime.compareTo(other.dateTime);
+  }
 }

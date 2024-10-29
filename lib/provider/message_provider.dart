@@ -14,10 +14,11 @@ class MessageProvider extends ChangeNotifier {
 
   void loadMessages() {
     var docRef = db.collection('chats').doc('room1').collection('messages');
-    docRef.orderBy('dateTime').snapshots().listen(
+    docRef.snapshots().listen(
       (event) {
         messages =
             event.docs.map((e) => Message.fromFirestore(e, null)).toList();
+        messages.sort();
         notifyListeners();
       },
       onError: (error) => debugPrint("Listen failed: $error"),
@@ -28,6 +29,7 @@ class MessageProvider extends ChangeNotifier {
     var message = Message(
       content: messageContent,
       uid: FirebaseAuth.instance.currentUser?.uid ?? "",
+      author: FirebaseAuth.instance.currentUser?.displayName ?? "Anònim",
       dateTime: DateTime.now(),
     );
 
